@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Mail\RegisterMail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+
 
 
 class AuthController extends Controller
@@ -35,7 +39,10 @@ class AuthController extends Controller
         $save->name = trim($request->name);
         $save->email = trim($request->email);
         $save->password = Hash::make($request->password);
+        $save->remember_token = Str::random(40) ;
         $save->save();
+        
+        Mail::to($save->email)->send(new RegisterMail($save));
 
         return redirect('login')->with('Parabéns', 'Registrado com sucesso!');
     }
