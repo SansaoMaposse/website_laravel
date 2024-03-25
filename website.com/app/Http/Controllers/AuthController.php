@@ -14,12 +14,12 @@ use Illuminate\Support\Str;
 class AuthController extends Controller
 {
     public function login(){
-        
+
         return view( 'auth.login' );
     }
 
     public function register(){
-        return view( 'auth.register' );
+        return view('auth.register');
     }
 
     public function forgot(){
@@ -27,7 +27,7 @@ class AuthController extends Controller
     }
 
     public function create_user( Request $request ){
-        
+
         request()->validate([
 
             'name' => 'required',
@@ -41,12 +41,12 @@ class AuthController extends Controller
         $save->password = Hash::make($request->password);
         $save->remember_token = Str::random(40) ;
         $save->save();
-        
+
         Mail::to($save->email)->send(new RegisterMail($save));
 
         return redirect('login')->with('Parabéns', 'Registrado com sucesso!');
     }
 
 
-    
+
 }
