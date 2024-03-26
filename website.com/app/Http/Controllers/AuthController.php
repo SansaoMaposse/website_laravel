@@ -26,6 +26,10 @@ class AuthController extends Controller
         return view( 'auth.forgot' );
     }
 
+   public function auth_login(Request $request){
+                    dd($request->all());
+   }
+
     public function create_user( Request $request ){
 
         request()->validate([
@@ -42,7 +46,7 @@ class AuthController extends Controller
         $save->remember_token = Str::random(40) ;
         $save->save();
 
-        Mail::to($save->email)->send(new RegisterMail($save));
+        //Mail::to($save->email)->send(new RegisterMail($save));
 
         return redirect('login')->with('Parabéns', 'Registrado com sucesso!');
     }
